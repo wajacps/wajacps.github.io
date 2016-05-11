@@ -34,36 +34,79 @@
 <body>
 
 </body>
-<!-- Start of Title Bar -->
-<header class="header dark-bg">
-    <div class="toggle-nav">
-        <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
-    </div>
-    <a href="/portal" class="logo"> Street <span class="lite">Lighting</span></a>
-    <div class="top-nav notification-row">
-        <!-- notification dropdown start-->
-        <ul class="nav pull-right top-menu">
-            <li class="dropdown">
-                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="fa-stack">
-                          <i class="fa fa-circle fa-stack-2x"></i>
-                          <i class="fa fa-user fa-lg fa-stack-1x fa-inverse"></i>
-                        </span>
-                    <span class="username">User Admin</span>
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu extended logout">
-                    <div class="log-arrow-up"></div>
-                    <li class="eborder-top"><a href="/profile"><i class="icon_id-2"></i> My Profile</a></li>
-                    <li><a href="/company"><i class="icon_building"></i> Manage Company</a></li>
-                    <li><a href="/user"><i class="icon_group"></i> Manage User</a></li>
-                    <li><a href="/admin_api"><i class="icon_cogs"></i> Manage API</a></li>
-                    <li><a href="/logout"><i class="icon_key_alt"></i> Log Out</a></li>
-                </ul>
-            </li>
-        </ul>
-        <!-- notification dropdown end -->
-    </div>
-</header>
-<!-- End of Title Bar -->
+<section id="container">
+    <!-- Start of Title Bar -->
+    <header class="header dark-bg">
+        <div class="toggle-nav">
+            <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+        </div>
+        <a href="/portal" class="logo"> Street <span class="lite">Lighting</span></a>
+        <div class="top-nav notification-row">
+            <!-- notification dropdown start-->
+            <ul class="nav pull-right top-menu">
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="fa-stack">
+                              <i class="fa fa-circle fa-stack-2x"></i>
+                              <i class="fa fa-user fa-lg fa-stack-1x fa-inverse"></i>
+                            </span>
+                        <span class="username">User Admin</span>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu extended logout">
+                        <div class="log-arrow-up"></div>
+                        <li class="eborder-top"><a href="/profile"><i class="icon_id-2"></i> My Profile</a></li>
+                        <li><a href="/company"><i class="icon_building"></i> Manage Company</a></li>
+                        <li><a href="/user"><i class="icon_group"></i> Manage User</a></li>
+                        <li><a href="/admin_api"><i class="icon_cogs"></i> Manage API</a></li>
+                        <li><a href="/logout"><i class="icon_key_alt"></i> Log Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- notification dropdown end -->
+        </div>
+    </header>
+    <!-- End of Title Bar -->
+
+    <!-- Start of Side Panel -->
+    <aside>
+        <div id="sidebar" class="nav-collapse">
+            <ul class="sidebar-menu">
+                <li class="active"><a class="" href="/index.html"><i class="icon_house_alt"></i><span>Home</span></a></li>
+                <li><a class="" href="/catalog"><i class="icon_wallet_alt"></i><span>My Services</span></a></li>
+                <li><a class="" href="/market"><i class="icon_bag_alt"></i><span>Services Directory</span></a></li>
+                <li><a class="" href="/asset"><i class="icon_compass"></i><span>Devices</span></a></li>
+            </ul>
+        </div>
+    </aside>
+    <!-- End of Side Panel -->
+
+    <!-- Start of Main Content -->
+    <section id="main-content">
+        <section class="wrapper">
+
+            <!-- Breadcrumb -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
+                    <ol class="breadcrumb">
+                        <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+                        <li><i class="fa fa-laptop"></i>Dashboard</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- end of Breadcrumb -->
+
+            <!-- Dashboard/Statistics -->
+            <div class="row">
+                <div class="col-lg-12" id="statistics">
+                    <p>TODO: Content of the dashboard here</p>
+                </div>
+            </div>
+            <!-- end of Dashboard/Statistics -->
+
+        </section>
+    </section>
+    <!-- End of main content -->
+</section>
 </html>
