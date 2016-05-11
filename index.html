@@ -143,6 +143,9 @@
                     // generate an array of random data
                     var data = [], time = (new Date()).getTime(), i;
 
+                    // Dummy revert time
+                    time.setDate(time.getDate()-1);
+
                     for (i = -19; i <= 0; i += 1) {
                         data.push({
                             x: time + i * 1000,
