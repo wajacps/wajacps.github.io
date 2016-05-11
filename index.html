@@ -129,13 +129,21 @@
     // On Load
     $(function(){
 
-        // Get the date bourdary
+        // Get the date boundary
         var today = new Date();
         var yesterday = new Date();
         yesterday.setDate(today.getDate()-1);
 
+        // Get the time
+        var myValue;
+
+        today.setHours(-23);
+        console.log(yesterday.toLocaleString());
+        console.log(today.toLocaleString());
+
+
         // Dummy set the value
-        $("#chartPowerConsumption").highcharts({
+/*        $("#chartPowerConsumption").highcharts({
             chart: {
                 zoomType: 'x'
             },
@@ -155,6 +163,7 @@
                 pointInterval: 24 * 3600 * 1000 // one day
             }]
         });
+*/
     });
 </script>
 </body>
