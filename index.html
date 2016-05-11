@@ -136,47 +136,22 @@
 
 
         $("#chartPowerConsumption").highcharts({
-            title: {
-                text: 'Power Consumption',
-                x: -20 //center
-            },
-            subtitle: {
-                text: '(for the past 24 hours)',
-                x: -20
+            chart: {
+                zoomType: 'x'
             },
             xAxis: {
                 type: 'datetime',
                 tickInterval: 3600 * 1000,
-                min: yesterday,
-                max: today
-            },
-            yAxis: {
-                title: {
-                    text: 'Usage(kWh)'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                valueSuffix: 'kWh'
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'middle',
-                borderWidth: 0
+                min: Date.UTC(2013,4,22),
+                max: Date.UTC(2013,4,23),
             },
             series: [{
-                name: 'Node-001',
                 data: [
-                        [1369206795000, 1],
-                        [1369225421000, 3],
-                        [1369230934000, 2]
+                    [1369206795000, 1],
+                    [1369225421000, 3],
+                    [1369230934000, 2]
                 ],
-                pointStart: yesterday,
+                pointStart: Date.UTC(2012, 05, 22),
                 pointInterval: 24 * 3600 * 1000 // one day
             }]
         });
