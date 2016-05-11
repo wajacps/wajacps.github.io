@@ -1,7 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="./css/elegant-icons-style.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href="./css/style.css" rel="stylesheet">
+    <link href="./css/style-responsive.css" rel="stylesheet" />
+    <link href="./css/corner-ribbon.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <!-- nice scroll -->
+    <script src="./js/jquery.scrollTo.min.js"></script>
+    <script src="./js/jquery.nicescroll.js" type="text/javascript"></script>
+
+    <!-- Added for the Toggle Support -->
+    <script src="./js/scripts.js"></script>
+
+    <!-- Added for timestamp -->
+    <script src="./js/moment.min.js"></script>
+    <script src="./js/livestamp.min.js"></script>
+    <title>Street Lighting</title>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+
 </body>
+<!-- Start of Title Bar -->
+<header class="header dark-bg">
+    <div class="toggle-nav">
+        <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+    </div>
+    <a href="/portal" class="logo"> Street <span class="lite">Lighting</span></a>
+    <div class="top-nav notification-row">
+        <!-- notification dropdown start-->
+        <ul class="nav pull-right top-menu">
+            <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="fa-stack">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-user fa-lg fa-stack-1x fa-inverse"></i>
+                        </span>
+                    <span class="username">User Admin</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu extended logout">
+                    <div class="log-arrow-up"></div>
+                    <li class="eborder-top"><a href="/profile"><i class="icon_id-2"></i> My Profile</a></li>
+                    <li><a href="/company"><i class="icon_building"></i> Manage Company</a></li>
+                    <li><a href="/user"><i class="icon_group"></i> Manage User</a></li>
+                    <li><a href="/admin_api"><i class="icon_cogs"></i> Manage API</a></li>
+                    <li><a href="/logout"><i class="icon_key_alt"></i> Log Out</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!-- notification dropdown end -->
+    </div>
+</header>
+<!-- End of Title Bar -->
 </html>
