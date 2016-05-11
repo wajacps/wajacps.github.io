@@ -147,9 +147,9 @@
             },
             series: [{
                 data: [
-                    [today.setHours(5), 1],
-                    [today.setHours(6), 3],
-                    [today.setHours(7), 2]
+                    [today.setHours(5).getTime(), 1],
+                    [today.setHours(6).getTime(), 3],
+                    [today.setHours(7).getTime(), 2]
                 ],
                 pointStart: yesterday,
                 pointInterval: 24 * 3600 * 1000 // one day
