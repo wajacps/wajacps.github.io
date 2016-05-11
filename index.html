@@ -34,6 +34,10 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
+    <!-- Google Map -->
+    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"
+            async defer></script>
+
     <title>Street Lighting</title>
 </head>
 <body>
@@ -120,11 +124,27 @@
             </div>
             <!-- end of Dashboard/Statistics -->
 
+            <!-- Start of Map -->
+            <div class="row">
+                <div class="col-lg-12" id="map" style="height: 600px">
+
+                </div>
+            </div>
+            <!-- End of Map -->
+
         </section>
     </section>
     <!-- End of main content -->
 </section>
 <script>
+
+    function initMap() {
+        var mapDiv = document.getElementById('map');
+        var map = new google.maps.Map(mapDiv, {
+            center: {lat: 44.540, lng: -78.546},
+            zoom: 8
+        });
+    }
 
     // On Load
     $(function(){
