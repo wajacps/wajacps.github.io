@@ -131,6 +131,9 @@
 
         // Dummy set the value
         $("#chartPowerConsumption").highcharts({
+            title: {
+                text: 'Power Consumption'
+            },
             chart: {
                 zoomType: 'x'
             },
@@ -154,8 +157,14 @@
                     }
                     return data;
                 }())
-
-            }]
+            }],
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                            Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                            Highcharts.numberFormat(this.y, 2);
+                }
+            }
         });
 
     });
