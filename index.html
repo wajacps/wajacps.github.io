@@ -134,7 +134,7 @@
         var yesterday = new Date();
         yesterday.setDate(today.getDate()-1);
 
-
+        // Dummy set the value
         $("#chartPowerConsumption").highcharts({
             chart: {
                 zoomType: 'x'
@@ -142,14 +142,14 @@
             xAxis: {
                 type: 'datetime',
                 tickInterval: 3600 * 1000,
-                min: Date.UTC(2013,4,22),
-                max: Date.UTC(2013,4,23),
+                min: yesterday,
+                max: today,
             },
             series: [{
                 data: [
-                    [1369206795000, 1],
-                    [1369225421000, 3],
-                    [1369230934000, 2]
+                    [today.setHour(5), 1],
+                    [today.setHour(6), 3],
+                    [today.setHour(7), 2]
                 ],
                 pointStart: Date.UTC(2012, 05, 22),
                 pointInterval: 24 * 3600 * 1000 // one day
