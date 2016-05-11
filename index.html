@@ -104,7 +104,6 @@
             <div class="row">
                 <div class="col-lg-9" id="powerConsumption">
                     <div class="panel">
-                        <div class="panel-footer">Power Consumption</div>
                         <div class="panel-body">
                             <div id="chartPowerConsumption"></div>
                         </div>
@@ -153,7 +152,7 @@
             },
             yAxis: {
                 title: {
-                    text: 'Temperature (°C)'
+                    text: 'Usage(kWh)'
                 },
                 plotLines: [{
                     value: 0,
@@ -162,7 +161,7 @@
                 }]
             },
             tooltip: {
-                valueSuffix: '°C'
+                valueSuffix: 'kWh'
             },
             legend: {
                 layout: 'vertical',
@@ -172,15 +171,13 @@
             },
             series: [{
                 name: 'Node-001',
-                data: [{
-                    data: [
+                data: [
                         [1369206795000, 1],
                         [1369225421000, 3],
                         [1369230934000, 2]
-                    ],
-                    pointStart: yesterday,
-                    pointInterval: 24 * 3600 * 1000 // one day
-                }]
+                ],
+                pointStart: yesterday,
+                pointInterval: 24 * 3600 * 1000 // one day
             }]
         });
     });
