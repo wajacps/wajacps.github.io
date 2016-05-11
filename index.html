@@ -129,41 +129,32 @@
     // On Load
     $(function(){
 
-        // Get the date boundary
-        var today = new Date();
-        var yesterday = new Date();
-        yesterday.setDate(today.getDate()-1);
-
-        // Get the time
-        var myValue;
-
-        today.setHours(-23);
-        console.log(yesterday.toLocaleString());
-        console.log(today.toLocaleString());
-
-
         // Dummy set the value
-/*        $("#chartPowerConsumption").highcharts({
+        $("#chartPowerConsumption").highcharts({
             chart: {
                 zoomType: 'x'
             },
             xAxis: {
                 type: 'datetime',
-                tickInterval: 3600 * 1000,
-                min: yesterday,
-                max: today,
+                tickInterval: 3600 * 1000
             },
             series: [{
-                data: [
-                    [today.setHours(5).getTime(), 1],
-                    [today.setHours(6).getTime(), 3],
-                    [today.setHours(7).getTime(), 2]
-                ],
-                pointStart: yesterday,
-                pointInterval: 24 * 3600 * 1000 // one day
+                data: (function () {
+                    // generate an array of random data
+                    var data = [], time = (new Date()).getTime(), i;
+
+                    for (i = -19; i <= 0; i += 1) {
+                        data.push({
+                            x: time + i * 1000,
+                            y: Math.random()
+                        });
+                    }
+                    return data;
+                }())
+
             }]
         });
-*/
+
     });
 </script>
 </body>
