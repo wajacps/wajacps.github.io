@@ -80,10 +80,6 @@
             right: 0;
         }
 
-        #chartPowerConsumption {
-            height: 245px;
-        }
-
         .label-danger {
             margin-right: 18px;
             margin-top: 3px;
@@ -196,7 +192,7 @@
                                 <form class="form-horizontal" id="generateGraph" role="form" action="">
                                     <div class="form-group">
                                         <label for="reportrange" class="col-sm-4 control-label">Date</label>
-                                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                        <div id="reportrange" class="col-sm-8" style="cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                                             <span id="date-span">December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
                                         </div>
                                     </div>
@@ -242,31 +238,6 @@
                 </div>
             </div>
             <!-- end of Dashboard/Statistics -->
-
-            <!-- Profiles List Datatable -->
-            <!--<div class="row">-->
-                <!--<div class="col-lg-12" id="alerts-dt">-->
-                    <!--<div class="panel panel-primary">-->
-                        <!--<div class="panel-footer">Profile List</div>-->
-                        <!--<div class="panel-body">-->
-                            <!--<table id="street-report-list" class="display"-->
-                                   <!--cellspacing="0" width="100%">-->
-                                <!--<thead>-->
-                                <!--<tr>-->
-                                    <!--<th>Name</th>-->
-                                    <!--<th>Gender</th>-->
-                                    <!--<th>Age</th>-->
-                                    <!--<th>Country</th>-->
-                                    <!--<th>Status</th>-->
-                                <!--</tr>-->
-                                <!--</thead>-->
-                            <!--</table>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!-- end of Profiles List Datatable -->
-
         </section>
     </section>
     <!-- End of main content -->
@@ -288,7 +259,7 @@
             startDate: moment().subtract(29, 'days'),
             endDate: moment(),
             minDate: '01/01/2012',
-            maxDate: '12/31/2015',
+            maxDate: '5/10/2016',
             dateLimit: {
                 days: 60
             },
@@ -337,7 +308,7 @@
             console.log("cancel event fired");
         });
         $('#options1').click(function() {
-            $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
+            $('#reportrange').data('daterangepicker').setOptions(optionSetReport, cb);
         });
         $('#options2').click(function() {
             $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
