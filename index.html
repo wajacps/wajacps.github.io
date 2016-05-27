@@ -15,11 +15,11 @@
     <link href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
 
-    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.12.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
@@ -50,7 +50,7 @@
         }
 
         .label-danger {
-            margin-right: 18px;
+            /*margin-right: 18px;*/
             margin-top: 3px;
         }
 
@@ -262,12 +262,12 @@
                             <div class="pad box-pane-left bg-green" style="min-height: 180px">
                                 <div class="filter-block margin-bottom">
                                     <h5 class="filter-header">Location</h5>
-                                    <form class=form-horizontal">
+                                    <form id="filter-location-form" class=form-horizontal">
                                         <div class="form-group" style="display:inline;">
                                             <!--<label for="filter-1" class="col-sm-3 control-label"></label>-->
                                             <div class="input-group">
                                                 <!--inner-addon.left-addon <i class="glyphicon glyphicon-search"></i>-->
-                                                <input id="filter-dt-box" type="text" class="form-control"
+                                                <input id="filter-dt-address" type="text" class="form-control"
                                                        placeholder="">
                                                 <span class="input-group-addon"><span
                                                         class="glyphicon glyphicon-search"></span> </span>
@@ -275,9 +275,9 @@
                                         </div>
                                     </form>
                                 </div><!-- /.filter-block -->
-                                <div class="filter-block margin-bottom">
+                                <div class="filter-block margin-bottom" style="display: none;">
                                     <h5 class="filter-header">Referrals</h5>
-                                    <form class=form-horizontal">
+                                    <form id="filter-referrals-form" class=form-horizontal">
                                         <div class="form-group" style="display:inline;">
                                             <!--<label for="filter-2" class="col-sm-3 control-label"></label>-->
                                             <div class="input-group">
@@ -285,20 +285,20 @@
                                                     <button type="button" class="btn btn-default dropdown-toggle"
                                                             data-toggle="dropdown"><span
                                                             class="glyphicon glyphicon-chevron-down"></span></button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a href="#zone-dt">Zone</a></li>
-                                                        <li><a href="#">Message</a></li>
-                                                        <li><a href="#status-dt">Status</a></li>
+                                                    <ul id="filter-by-box" class="dropdown-menu">
+                                                        <li><a id="node-id-dt" data-cols='0'>Node ID</a></li>
+                                                        <li><a id="message-dt" data-cols='1'>Message</a></li>
+                                                        <li><a id="status-dt" data-cols='2'>Status</a></li>
                                                     </ul>
                                                 </div>
-                                                <input id="filter-2" type="text" class="form-control" placeholder="">
+                                                <input id="filter-referrals" type="text" class="form-control" placeholder="">
                                                 <span class="input-group-addon"><span
                                                         class="glyphicon glyphicon-search"></span> </span>
                                             </div>
                                         </div>
                                     </form>
                                 </div><!-- /.filter-block -->
-                                <div class="filter-block">
+                                <div class="filter-block" style="display: none;">
                                     <h5 class="filter-header">Lighted</h5>
                                     <span class="filter-text">on</span>
                                 </div><!-- /.filter-block -->
@@ -328,13 +328,13 @@
     <!-- End of main content -->
 </section>
 <script>
-    var map;
-    var oTable, table;
+    var map, marker, markerLight = [];
+    var table;
     function initMap() {
-        var lat = 3.1108024, lng = 101.663545;
+        var lat = 2.930327, lng = 101.658908, zoomLevel = 18;
         var mapOptions = {
             // How zoomed in you want the map to start at (always required)
-            zoom: 15,
+            zoom: zoomLevel,
             styles: [{
                 "featureType": "landscape",
                 "stylers": [{"hue": "#FFBB00"}, {"saturation": 43.400000000000006}, {"lightness": 37.599999999999994}, {"gamma": 1}]
@@ -371,8 +371,6 @@
                 map.setCenter(center.lat(), center.lng());
             }
         });
-
-        loadMarkerMap(oTable.fnGetData());
     }
 
     function requestData() {
@@ -391,6 +389,45 @@
             },
             cache: false
         });
+    }
+
+    function getBatteryPower(level) {
+        if (level == 100) {
+            return "Full Power";
+        } else if (level == 1) {
+            return "Hibernating";
+        } else if (level > 30) {
+            return level+"% Remaining";
+        } else if (level <= 30) {
+            return "Low Battery";
+        } else return "No Response";
+    }
+
+    function getLightStatus(state) {
+        if (state == 1) return "ON";
+        else if (state == 0) return "OFF";
+        else return "Error";
+    }
+
+    function callbackRowCreated (row, data, dataIndex) {
+        $(row).addClass('text text-center');
+        var nodeId = data.id,
+                message = getBatteryPower(data.battery_level),
+                status = getLightStatus(data.state),
+                group = data.type,
+                latLng = data.location;
+
+        // Replace the data
+        $(row).find('td:eq(0)').html(nodeId);
+        $(row).find('td:eq(1)').html(message);
+        $(row).find('td:eq(2)').html(status);
+        $(row).find('td:eq(3)').html(group);
+        $(row).find('td:eq(4)').html(latLng);
+
+        // Attach some data attributes to the <TR>
+        $(row).attr('data-row-id', nodeId);
+
+        loadMarkerMap(data);
     }
 
     // On Load
@@ -446,119 +483,198 @@
         });
         Highcharts.setOptions(Highcharts.themes['pastel']);
 
-        oTable = $('#street-light-list').dataTable({
-            /*processing: true,*/
-            data: [[
-                "Node-ID-100",
-                "No Response",
-                "Error",
-                "Group one",
-                [[3.063187, 101.620230], [3.063016, 101.620301], [3.062965, 101.620294], [3.062863, 101.620347], [3.062740, 101.620396]]
+        table = $('#street-light-list').DataTable({
+            "ajax": {
+                "url": "api.json",//http://2b6c3c50-0156-4c5b-86b5-15db1e60e17f.iot.tmrnd.com.my:8090/assets",
+                "dataSrc": "Data"
+            },
+            "columns" : [
+                {"data" : "id", "className" : "text-left", "width": "10%"},                                          // node id
+                {"data" : "battery_level", "className" : "text-left", "width": "6%"},                                // message
+                {"data" : "state", "className" : "text-left", "width": "6%"},                                        // status
+                {"data" : "type", "className" : "text-left", "width": "10%"},                                        // group
+                {"data" : "location", "visible": false, "searchable" : false}                                        // latLng
             ],
-                [
-                    "Node-ID-111",
-                    "Low Battery",
-                    "Alert",
-                    "Group one",
-                    [[2.930745, 101.653291], [2.930745, 101.653540], [2.930748, 101.653800], [2.930748, 101.654021], [2.930727, 101.654326], [2.930696, 101.654607], [2.930647, 101.654915], [2.930587, 101.655178]]
-                ], [
-                    "Node-ID-502",
-                    "Hibernate",
-                    "OK",
-                    "Group one",
-                    [[3.1160956, 101.6644537], [3.116053, 101.6646574], [3.115906, 101.664877], [3.1159786, 101.6649366], [3.1159278, 101.665127], [3.1158776, 101.6653135], [3.115804, 101.6655825], [3.1154241, 101.6667463], [3.115365, 101.66689], [3.1152726, 101.667071]]
-                ], [
-                    "Node-ID-156",
-                    "Hibernate",
-                    "OK",
-                    "Group one",
-                    [[3.063187, 101.620230], [3.063016, 101.620301], [3.062965, 101.620294], [3.062863, 101.620347], [3.062740, 101.620396]]
-                ], [
-                    "Node-ID-157",
-                    "Hibernate",
-                    "OK",
-                    "Group one",
-                    [[3.063187, 101.620230], [3.063016, 101.620301], [3.062965, 101.620294], [3.062863, 101.620347], [3.062740, 101.620396]]
-                ]],
+            "rowId" : "id",
+            "createdRow" : callbackRowCreated,
             select: {
                 style: 'single'
             },
-            "columnDefs": [
-                {
-                    "targets": 4,
-                    "visible": false,
-                    "searchable": false
-                }
-            ],
             bLengthChange: false,
-            "bFilter": false,
-            "bInfo": false
+            "bInfo": true,
+            "bFilter": false
         });
 
-        table = $('#street-light-list').DataTable();
-
-        $('#street-light-list tbody').on('click', 'button', function (e) {
+        $('#street-light-list tbody').on('click', 'tr', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            var data = table.row($(this).parents('tr')).data();
-            loadZoneMarkerMap(data);
+            var data = table.row($(this).closest('tr')).data();
+
+            singleMarkerMap(data);
         });
 
-        $('#search_form').submit(function (e) {
+        $('#filter-location-form').submit(function (e) {
             e.preventDefault();
             GMaps.geocode({
-                address: $('#search_address').val().trim(),
+                address: $('#filter-dt-address').val().trim(),
                 callback: function (results, status) {
+                    console.log(JSON.stringify(results));
                     if (status == 'OK') {
                         var newLatLng = results[0].geometry.location;
-                        updateLatLng(newLatLng, map.getZoom());
-                        map.setCenter(currLat, currLng);
-                        marker.setPosition(newLatLng);
+                        map.setCenter(newLatLng.lat(), newLatLng.lng());
+//                        marker.setPosition(newLatLng);
                     }
                 }
             });
         });
+
+        var filterCol = $('#filter-by-box li a').attr('data-cols');
+        $('#filter-by-box li a').on('click', function(e){
+            e.preventDefault();
+            $('#filter-referrals').val('');
+            filterCol = $(this).attr('data-cols');
+        });
+
+//        $('#filter-referrals-form').submit(function (e) {
+//            e.preventDefault();
+        $('input#filter-referrals').on( 'keyup click', function (e) {
+            e.preventDefault();
+//            var column = filterCol;
+//            // change state to number
+//            if (column == 2) {
+//                this.value = statusNumerical(this.value);
+//            }
+//            //console.log(column, textToFilter);
+//            //table.column(column).search(textToFilter).draw();
+//            //console.log(table.columns(column).data().eq( 0 )[column]);
+////            table
+//
+////                    .columns( column )
+////                    .search( textToFilter )
+////                    .draw();
+//            //console.log(column, this.value);
+//            if ( table.search() !== this.value ) {
+//                console.log("search", "t "+table.search(), "v "+this.value);
+//                table
+//                        .search( this.value )
+//                        .draw();
+//            }
+            table.draw();
+        });
     });
+
+    function statusNumerical(state) {
+        switch (state.toLowerCase()) {
+            case "on": return 1;
+            case "off": return 0;
+            default: return -1;
+        }
+    }
+
+    function filterByReferrals(column, textToFilter) {
+        console.log(column, textToFilter);
+        if (textToFilter == "") return;
+        $('#street-light-list').DataTable().search(
+
+        ).draw();
+        $.fn.dataTable.ext.search.push(
+                function( settings, data, dataIndex ) {
+                    console.log(settings, data, dataIndex);
+                    var rowData = data[column];
+                    return !!(rowData === textToFilter || textToFilter.indexOf(rowData) > -1);
+                }
+        );
+    }
+
+
+    function singleMarkerMap(data) {
+        if (map === undefined || table == null) return;
+
+        var pinColor = "CDDC39";
+        var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+                new google.maps.Size(28, 34),
+                new google.maps.Point(0,0),
+                new google.maps.Point(10, 34));
+        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+                new google.maps.Size(40, 37),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(12, 35));
+
+        map.removeMarker(markerLight[0]);
+        markerLight.length = 0;
+        var latLng = new google.maps.LatLng(parseFloat(data.location.lat), parseFloat(data.location.long));
+        var markerL = map.createMarker({
+            position: latLng
+            ,icon: pinImage
+            ,shadow: pinShadow
+            ,infoWindow: {
+                content: '<div id="mapInfo">'+
+                '<p><strong>Light Id: '+data.id+'</strong><br><br>'+
+                '<i class="fa fa-lightbulb-o"></i>Light State: '+getLightStatus(data.state)+'<br>' +
+                '<i class="fa fa-battery-3"></i>Battery Level: '+getBatteryPower(data.battery_level)+'<br>'+
+                '</div>'
+            }
+        });
+        markerLight.push(markerL);
+        map.addMarker(markerLight[0]);
+        map.setCenter(parseFloat(data.location.lat), parseFloat(data.location.long));
+
+    }
 
     function loadMarkerMap(data) {
         if (map === undefined || table == null) return;
-        //var markerBounds = new google.maps.LatLngBounds();
-        data.forEach(function (d) {
-            d[4].forEach(function (latLng) {
-                //var position = new google.maps.LatLng(latLng[0], latLng[1]);
-                map.addMarker({
-                    lat: latLng[0]
-                    , lng: latLng[1]
-//                    ,icon: $this.data('icon')
-                });
-                //markerBounds.extend(position);
-            });
+
+        var pinColor = "E53935";
+        var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+                new google.maps.Size(20, 32),
+                new google.maps.Point(0,0),
+                new google.maps.Point(10, 34));
+        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+                new google.maps.Size(40, 37),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(12, 35));
+
+        var latLng = new google.maps.LatLng(parseFloat(data.location.lat), parseFloat(data.location.long));
+        data.marker = map.createMarker({
+            position: latLng
+//          ,icon: $this.data('icon')
+            ,icon: pinImage
+            ,shadow: pinShadow
+            ,infoWindow: {
+                content: '<div id="mapInfo">'+
+                '<p><strong>Light Id: '+data.id+'</strong><br><br>'+
+                '<i class="fa fa-lightbulb-o"></i>Light State: '+getLightStatus(data.state)+'<br>' +
+                '<i class="fa fa-battery-3"></i>Battery Level: '+getBatteryPower(data.battery_level)+'<br>'+
+                '</div>'
+            }
         });
-        //map.fitBounds(markerBounds);
+
+        map.addMarker(data.marker);
     }
 
     function loadZoneMarkerMap(d) {
         if (map === null || table == null) return;
         var pointers = [];
         var markerBounds = new google.maps.LatLngBounds();
-        if (!d && table.rows('.selected').data()[0]) {
-            if (table.rows('.selected').data()[0][4]) {
-                pointers = table.rows('.selected').data()[0][4];
-            }
-        } else {
-            pointers = d[4];
-            map.removeMarkers();
-            pointers.forEach(function (latLng) {
-                var position = new google.maps.LatLng(latLng[0], latLng[1]);
-                map.addMarker({
-                    lat: latLng[0]
-                    , lng: latLng[1]
-//                    ,icon: $this.data('icon')
-                });
-                markerBounds.extend(position);
-            });
-            map.fitBounds(markerBounds);
-        }
+        //pointers =
+//        if (!d && table.rows('.selected').data()[0]) {
+//            if (table.rows('.selected').data()[0][4]) {
+//                pointers = table.rows('.selected').data()[0][4];
+//            }
+//        } else {
+//            pointers = d[4];
+//            map.removeMarkers();
+//            pointers.forEach(function (latLng) {
+//                var position = new google.maps.LatLng(latLng[0], latLng[1]);
+//                map.addMarker({
+//                    lat: latLng[0]
+//                    , lng: latLng[1]
+////                    ,icon: $this.data('icon')
+//                });
+//                markerBounds.extend(position);
+//            });
+//            map.fitBounds(markerBounds);
+//        }
     }
 
 </script>
